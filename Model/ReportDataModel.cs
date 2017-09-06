@@ -9,12 +9,30 @@ namespace Model
         /// <summary>
         ///     Checks if fileName can be either Report Name or Report Group Name
         /// </summary>
-        public static bool Validate(string fileName)
-            => ReportConfiguration.Validate(fileName) || GroupConfiguration.Validate(fileName);
+        public static bool Validate(string reportName) // todo ? check on exstention ?
+            => ReportConfiguration.Validate(reportName) || GroupConfiguration.Validate(reportName);
 
         #endregion
 
+        #region Properties
+
+        private ApplicationConfigurator ApplicationConfigurator { get; }
+
+        #endregion
+
+        public ReportDataModel()
+        {
+            ApplicationConfigurator = new ApplicationConfigurator();
+        }
+
         #region Methods
+
+        public void OpenInReader(string filePath) => ApplicationConfigurator.Open(filePath);
+
+        public void OpenForPrint(string filePath, PrinterConfiguration configuration)
+        {
+            throw new NotImplementedException("delegate to windows pdf printer");
+        }
 
         /// <summary>
         ///     Tryes to find report by it's name in DB. Returns <c>null</c> if no one;

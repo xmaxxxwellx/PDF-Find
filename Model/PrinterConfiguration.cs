@@ -1,6 +1,6 @@
 ﻿namespace Model
 {
-    public class PrinterConfiguration
+    public abstract class PrinterConfiguration
     {
         #region Properties
 

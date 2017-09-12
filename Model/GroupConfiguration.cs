@@ -1,23 +1,31 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace Model
 {
     public class GroupConfiguration : PrinterConfiguration
     {
-        #region Static
+        #region Fields
 
-        internal static bool Validate(string reportName) => Regex.IsMatch(reportName, "\\b[\\w[\\d]]{2}\\d{4}.*\\B");
+        private string _groupName;
 
         #endregion
 
         #region Properties
 
-        public string GroupName { get; set; }
-
         public ICollection<ReportConfiguration> Reports { get; set; }
+
+        public string GroupName
+        {
+            get { return _groupName; }
+            internal set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new ArgumentException("Argument is null or whitespace", nameof(value));
+                _groupName = value;
+            }
+        }
 
         #endregion
 
@@ -25,10 +33,7 @@ namespace Model
 
         internal ReportConfiguration CreateReport(string reportName)
         {
-            // todo exception localizations
-            // todo exception type
-            if (!ReportConfiguration.Validate(reportName))
-                throw new ArgumentException($"Invalid {nameof(reportName)}.");
+            ReportConfiguration.Validate(reportName);
 
             // todo exception localizations
             // todo exception type

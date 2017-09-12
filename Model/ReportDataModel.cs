@@ -4,16 +4,6 @@ namespace Model
 {
     public class ReportDataModel
     {
-        #region Static
-
-        /// <summary>
-        ///     Checks if fileName can be either Report Name or Report Group Name
-        /// </summary>
-        public static bool Validate(string reportName) // todo ? check on exstention ?
-            => ReportConfiguration.Validate(reportName) || GroupConfiguration.Validate(reportName);
-
-        #endregion
-
         #region Properties
 
         private ApplicationConfigurator ApplicationConfigurator { get; }
@@ -39,10 +29,7 @@ namespace Model
         /// </summary>
         public ReportConfiguration FindReport(string reportName)
         {
-            // todo exception localizations
-            // todo exception type
-            if (!ReportConfiguration.Validate(reportName))
-                throw new ArgumentException($"Invalid {nameof(reportName)}");
+            ReportConfiguration.Validate(reportName);
 
             throw new NotImplementedException("Find in DB");
         }
@@ -53,9 +40,8 @@ namespace Model
         public GroupConfiguration FindGroup(string groupName)
         {
             // todo exception localizations
-            // todo exception type
-            if (!GroupConfiguration.Validate(groupName))
-                throw new ArgumentException($"Invalid {nameof(groupName)}");
+            if (string.IsNullOrWhiteSpace(groupName))
+                throw new ArgumentException("Argument is null or whitespace", nameof(groupName));
 
             throw new NotImplementedException("Find in DB");
         }

@@ -61,7 +61,7 @@ namespace Model
 
             return
                 DataBase.GroupConfigurations.LastOrDefault(
-                    configuration => configuration.GroupName.StartsWith(reportName));
+                    configuration => reportName.StartsWith(configuration.GroupName));
         }
 
         #endregion

@@ -39,8 +39,9 @@ namespace Model
         /// </summary>
         public ReportConfiguration FindReport(string reportName)
         {
-            // todo delete on need
-            ReportConfiguration.Validate(reportName);
+            // todo exception localizations
+            if (string.IsNullOrWhiteSpace(reportName))
+                throw new ArgumentException("Argument is null or whitespace", nameof(reportName));
 
             // todo inner db procedure
             return
@@ -56,8 +57,6 @@ namespace Model
             // todo exception localizations
             if (string.IsNullOrWhiteSpace(reportName))
                 throw new ArgumentException("Argument is null or whitespace", nameof(reportName));
-            // todo delete on need
-            ReportConfiguration.Validate(reportName);
 
             return
                 DataBase.GroupConfigurations.LastOrDefault(

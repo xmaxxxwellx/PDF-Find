@@ -23,6 +23,8 @@ namespace Model
             {
                 if (string.IsNullOrWhiteSpace(value))
                     throw new ArgumentException("Argument is null or whitespace", nameof(value));
+                if (value.Length < 6)
+                    throw new ArgumentException("Group name can'be less that 6 symbols", nameof(value));
                 _groupName = value;
             }
         }
@@ -33,11 +35,13 @@ namespace Model
 
         internal ReportConfiguration CreateReport(string reportName)
         {
-            ReportConfiguration.Validate(reportName);
-
+            if (string.IsNullOrWhiteSpace(reportName))
+                throw new ArgumentException("Argument is null or whitespace", nameof(reportName));
+            if (reportName.Length < 12)
+                throw new ArgumentException("Report name can'be less that 12 symbols", nameof(reportName));
             // todo exception localizations
             // todo exception type
-            if (!reportName.StartsWith(GroupName))
+            if (!reportName.Substring(0, reportName.Length - 6).StartsWith(GroupName))
                 throw new ArgumentException($"{nameof(reportName)} is not from this group.");
 
             var reportConfiguration = new ReportConfiguration

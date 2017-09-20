@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Model
 {
@@ -26,7 +27,12 @@ namespace Model
                 _reportName = value;
             }
         }
+
+        public ICollection<ReportPrintData> Openings { get; internal set; }
         
         #endregion
+
+        public void AddFile(string fileName)
+            => Openings.Add(new ReportPrintData {FileName = fileName, Opening = DateTime.Now, Report = this});
     }
 }

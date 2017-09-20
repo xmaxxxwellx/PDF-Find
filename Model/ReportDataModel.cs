@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 
 namespace Model
@@ -24,13 +25,18 @@ namespace Model
         /// <summary>
         /// opens file in prf reader
         /// </summary>
-        public void OpenInReader(string filePath) => ApplicationConfigurator.Open(filePath);
+        public void OpenInReader(string filePath)
+        {
+            DataBase.FileOpeningDatas.Add(new FileReadingData { FileName = Path.GetFileNameWithoutExtension(filePath), Opening = DateTime.Now });
+            ApplicationConfigurator.Open(filePath);
+        }
 
         /// <summary>
         ///              delegates file to printer with <paramref name="configuration"/>
         /// </summary>
-        public void OpenForPrint(string filePath, PrinterConfiguration configuration)
+        public void OpenForPrint(string filePath, ReportConfiguration configuration)
         {
+            configuration.AddFile(Path.GetFileNameWithoutExtension(filePath));
             throw new NotImplementedException("delegate to printer");
         }
 
@@ -57,7 +63,8 @@ namespace Model
             // todo exception localizations
             if (string.IsNullOrWhiteSpace(reportName))
                 throw new ArgumentException("Argument is null or whitespace", nameof(reportName));
-
+            
+            // todo inner db procedure
             return
                 DataBase.GroupConfigurations.LastOrDefault(
                     configuration => reportName.StartsWith(configuration.GroupName));

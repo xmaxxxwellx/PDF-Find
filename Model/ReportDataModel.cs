@@ -28,7 +28,6 @@ namespace Model
         /// </summary>
         public void OpenInReader(string filePath)
         {
-            DataBase.FileOpeningDatas.Add(new FileReadingData { FileName = Path.GetFileNameWithoutExtension(filePath), Opening = DateTime.Now });
             if (Path.GetExtension(filePath) == "pdf")
                 // todo locale    // todo exception type
                 throw new ArgumentException("File must be .pdf only", nameof(filePath));
@@ -36,7 +35,8 @@ namespace Model
             if (!File.Exists(filePath))
                 // todo locale
                 throw new FileNotFoundException("Can't find file", filePath);
-
+            DataBase.FileOpeningDatas.Add(new FileReadingData { FileName = Path.GetFileNameWithoutExtension(filePath), Opening = DateTime.Now });
+            DataBase.SaveChanges();
             new Process { StartInfo = { FileName = ApplicationConfigurator.ReaderPath, Arguments = Path.GetFullPath(filePath) } }.Start();
         }
 
@@ -46,6 +46,7 @@ namespace Model
         public void OpenForPrint(string filePath, ReportConfiguration configuration)
         {
             configuration.AddFile(Path.GetFileNameWithoutExtension(filePath));
+            DataBase.SaveChanges();
             throw new NotImplementedException("delegate to printer");
         }
 

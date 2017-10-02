@@ -17,6 +17,9 @@ namespace Model
         
         public ReportDataModel(IApplicationConfigurator applicationConfigurator,  PrinterConfigurationDataBase dataBase)
         {
+            if (applicationConfigurator == null) throw new ArgumentNullException(nameof(applicationConfigurator));
+            if (dataBase == null) throw new ArgumentNullException(nameof(dataBase));
+
             ApplicationConfigurator = applicationConfigurator;
             DataBase = dataBase;
         }
@@ -59,6 +62,8 @@ namespace Model
             if (string.IsNullOrWhiteSpace(reportName))
                 throw new ArgumentException("Argument is null or whitespace", nameof(reportName));
 
+            ReportConfiguration.ValidateReportName(reportName);
+
             // todo inner db procedure
             return
                 DataBase.ReportConfigurations.FirstOrDefault(
@@ -74,6 +79,8 @@ namespace Model
             if (string.IsNullOrWhiteSpace(reportName))
                 throw new ArgumentException("Argument is null or whitespace", nameof(reportName));
             
+            // todo validation
+
             // todo inner db procedure
             return
                 DataBase.GroupConfigurations.LastOrDefault(

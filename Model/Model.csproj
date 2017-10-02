@@ -49,7 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationConfigurator.cs" />
+    <Compile Include="IApplicationConfigurator.cs" />
+    <Compile Include="RegistryApplicationConfigurator.cs" />
     <Compile Include="Entities\FileReadingData.cs" />
     <Compile Include="Entities\IFileOpeningData.cs" />
     <Compile Include="Entities\GroupConfiguration.cs" />

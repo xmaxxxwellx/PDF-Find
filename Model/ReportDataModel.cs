@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -10,14 +11,14 @@ namespace Model
 
         private PrinterConfigurationDataBase DataBase { get; }
 
-        private ApplicationConfigurator ApplicationConfigurator { get; }
+        private IApplicationConfigurator ApplicationConfigurator { get; }
 
         #endregion
-
-        public ReportDataModel()
+        
+        public ReportDataModel(IApplicationConfigurator applicationConfigurator,  PrinterConfigurationDataBase dataBase)
         {
-            ApplicationConfigurator = new ApplicationConfigurator();
-            DataBase = new PrinterConfigurationDataBase();
+            ApplicationConfigurator = applicationConfigurator;
+            DataBase = dataBase;
         }
 
         #region Methods
@@ -28,7 +29,15 @@ namespace Model
         public void OpenInReader(string filePath)
         {
             DataBase.FileOpeningDatas.Add(new FileReadingData { FileName = Path.GetFileNameWithoutExtension(filePath), Opening = DateTime.Now });
-            ApplicationConfigurator.Open(filePath);
+            if (Path.GetExtension(filePath) == "pdf")
+                // todo locale    // todo exception type
+                throw new ArgumentException("File must be .pdf only", nameof(filePath));
+
+            if (!File.Exists(filePath))
+                // todo locale
+                throw new FileNotFoundException("Can't find file", filePath);
+
+            new Process { StartInfo = { FileName = ApplicationConfigurator.ReaderPath, Arguments = Path.GetFullPath(filePath) } }.Start();
         }
 
         /// <summary>

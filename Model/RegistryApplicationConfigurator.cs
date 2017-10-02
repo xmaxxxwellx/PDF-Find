@@ -1,23 +1,17 @@
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 
 namespace Model
 {
-    public enum Language
-    {
-        English,
-        Ukrainian
-    }
-
-    public class ApplicationConfigurator : INotifyPropertyChanged
+    public class RegistryApplicationConfigurator : IApplicationConfigurator
     {
         #region Fields
 
         private Language _language;
         private string _readerPath;
+        private string _dataBaseConnectionString;
 
         #endregion
 
@@ -44,7 +38,8 @@ namespace Model
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException("Argument is null or whitespace", nameof(value)); // todo locale
+                    // todo locale
+                    throw new ArgumentException("Argument is null or whitespace", nameof(value));
                 if (_readerPath == value)
                     return;
                 if (!File.Exists(value))
@@ -61,9 +56,23 @@ namespace Model
             }
         }
 
+        public string DataBaseConnectionString
+        {
+            get { return _dataBaseConnectionString; }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    // todo locale
+                    throw new ArgumentException("Argument is null or whitespace", nameof(value));
+                _dataBaseConnectionString = value;
+                // todo set to Registry
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
 
-        public ApplicationConfigurator()
+        public RegistryApplicationConfigurator()
         {
             throw new NotImplementedException("Open Registry to take/write data");
         }
@@ -72,19 +81,6 @@ namespace Model
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-        internal void Open(string filePath)
-        {
-            if (Path.GetExtension(filePath) == "pdf")
-                // todo locale    // todo exception type
-                throw new ArgumentException("File must be .pdf only", nameof(filePath));
-
-            if (!File.Exists(filePath))
-                // todo locale
-                throw new FileNotFoundException("Can't find file", ReaderPath);
-
-            new Process {StartInfo = {FileName = ReaderPath, Arguments = Path.GetFullPath(filePath)}}.Start();
-        }
 
         #endregion
     }

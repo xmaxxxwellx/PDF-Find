@@ -1,21 +1,38 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
+using PdfSharp.Pdf;
 
 namespace Model
 {
     public class ReportDataModel
     {
+        #region Static
+
+        private static string GetReportName(string filePath) => new PdfDocument(filePath).Info.Title;
+
+        private static void CheckPdfBy(string filePath)
+        {
+            if (Path.GetExtension(filePath) == "pdf")
+                // todo locale    // todo exception type
+                throw new ArgumentException("File must be .pdf only", nameof(filePath));
+
+            if (!File.Exists(filePath))
+                // todo locale
+                throw new FileNotFoundException("Can't find file", filePath);
+        }
+
+        #endregion
+
         #region Properties
 
         private PrinterConfigurationDataBase DataBase { get; }
 
-        private IApplicationConfigurator ApplicationConfigurator { get; }
+        public IApplicationConfigurator ApplicationConfigurator { get; }
 
         #endregion
-        
-        public ReportDataModel(IApplicationConfigurator applicationConfigurator,  PrinterConfigurationDataBase dataBase)
+
+        public ReportDataModel(IApplicationConfigurator applicationConfigurator, PrinterConfigurationDataBase dataBase)
         {
             if (applicationConfigurator == null) throw new ArgumentNullException(nameof(applicationConfigurator));
             if (dataBase == null) throw new ArgumentNullException(nameof(dataBase));
@@ -27,64 +44,57 @@ namespace Model
         #region Methods
 
         /// <summary>
-        /// opens file in prf reader
+        ///     opens file in prf reader
         /// </summary>
         public void OpenInReader(string filePath)
         {
-            if (Path.GetExtension(filePath) == "pdf")
-                // todo locale    // todo exception type
-                throw new ArgumentException("File must be .pdf only", nameof(filePath));
+            CheckPdfBy(filePath);
 
-            if (!File.Exists(filePath))
-                // todo locale
-                throw new FileNotFoundException("Can't find file", filePath);
-            DataBase.FileOpeningDatas.Add(new FileReadingData { FileName = Path.GetFileNameWithoutExtension(filePath), Opening = DateTime.Now });
+            var process = new Process
+            {
+                StartInfo = {FileName = ApplicationConfigurator.ReaderPath, Arguments = Path.GetFullPath(filePath)}
+            };
+            if (!process.Start())
+                throw new ArgumentException("Can't open pdf reader");
+
+            DataBase.FileOpeningDatas.Add(new FileReadingData
+            {
+                FileName = Path.GetFileNameWithoutExtension(filePath),
+                Opening = DateTime.Now
+            });
             DataBase.SaveChanges();
-            new Process { StartInfo = { FileName = ApplicationConfigurator.ReaderPath, Arguments = Path.GetFullPath(filePath) } }.Start();
         }
 
         /// <summary>
-        ///              delegates file to printer with <paramref name="configuration"/>
+        ///     delegates file to printer with <paramref name="configuration" />
         /// </summary>
         public void OpenForPrint(string filePath, ReportConfiguration configuration)
         {
+            CheckPdfBy(filePath);
+
             configuration.AddFile(Path.GetFileNameWithoutExtension(filePath));
             DataBase.SaveChanges();
             throw new NotImplementedException("delegate to printer");
         }
 
         /// <summary>
-        ///     Tryes to find report by it's name in DB. Returns <c>null</c> if no one;
+        ///     Tryes to find report by it's name. Returns <c>null</c> if no one;
         /// </summary>
-        public ReportConfiguration FindReport(string reportName)
+        public ReportConfiguration FindReport(string filePath)
         {
-            // todo exception localizations
-            if (string.IsNullOrWhiteSpace(reportName))
-                throw new ArgumentException("Argument is null or whitespace", nameof(reportName));
+            CheckPdfBy(filePath);
 
-            ReportConfiguration.ValidateReportName(reportName);
-
-            // todo inner db procedure
-            return
-                DataBase.ReportConfigurations.FirstOrDefault(
-                    configuration => configuration.ReportName.Equals(reportName));
+            return DataBase.FindReport(GetReportName(filePath));
         }
 
         /// <summary>
-        ///     Tryes to find report group by it's name in DB. Return LAST of the list or <c>null</c> if no one;
+        ///     Tryes to find report group by it's name. Return LAST of the list or <c>null</c> if no one;
         /// </summary>
-        public GroupConfiguration FindGroup(string reportName)
+        public GroupConfiguration FindGroup(string filePath)
         {
-            // todo exception localizations
-            if (string.IsNullOrWhiteSpace(reportName))
-                throw new ArgumentException("Argument is null or whitespace", nameof(reportName));
-            
-            // todo validation
+            CheckPdfBy(filePath);
 
-            // todo inner db procedure
-            return
-                DataBase.GroupConfigurations.LastOrDefault(
-                    configuration => reportName.StartsWith(configuration.GroupName));
+            return DataBase.FindGroup(GetReportName(filePath));
         }
 
         #endregion

@@ -1,6 +1,6 @@
 using System;
 
-namespace Model
+namespace Model.Entities
 {
     public class FileReadingData : IFileOpeningData
     {

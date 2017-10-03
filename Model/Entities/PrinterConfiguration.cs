@@ -1,8 +1,12 @@
-﻿namespace Model
+﻿using System;
+
+namespace Model.Entities
 {
     public abstract class PrinterConfiguration
     {
         #region Properties
+
+        internal Guid Id { get; private set; }
 
         public string PrinterName { get; set; }
 

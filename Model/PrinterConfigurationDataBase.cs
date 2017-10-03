@@ -1,6 +1,7 @@
 using System;
 using System.Data.Entity;
 using System.Linq;
+using Model.Entities;
 
 namespace Model
 {
@@ -23,6 +24,8 @@ namespace Model
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            //modelBuilder.Entity<ReportConfiguration>().HasKey(configuration => configuration.)
+
             throw new NotImplementedException("Form db rules and formats");
 
             base.OnModelCreating(modelBuilder);

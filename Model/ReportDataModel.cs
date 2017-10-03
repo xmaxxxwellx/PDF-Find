@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using Model.Entities;
 using PdfSharp.Pdf;
 
 namespace Model

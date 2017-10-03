@@ -19,7 +19,7 @@ namespace Model.Entities
         public string GroupName
         {
             get { return _groupName; }
-            internal set
+            set
             {
                 if (string.IsNullOrWhiteSpace(value))
                     throw new ArgumentException("Argument is null or whitespace", nameof(value));

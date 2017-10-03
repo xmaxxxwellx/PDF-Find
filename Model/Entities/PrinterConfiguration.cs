@@ -6,7 +6,7 @@ namespace Model.Entities
     {
         #region Properties
 
-        internal Guid Id { get; private set; }
+        public Guid Id { get; set; }
 
         public string PrinterName { get; set; }
 

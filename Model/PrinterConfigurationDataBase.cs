@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Model.Entities;
@@ -9,14 +10,14 @@ namespace Model
     {
         #region Properties
 
-        protected virtual DbSet<ReportConfiguration> ReportConfigurations { get; set; }
-        protected virtual DbSet<GroupConfiguration> GroupConfigurations { get; set; }
-        public virtual DbSet<IFileOpeningData> FileOpeningDatas { get; set; }
+        public virtual DbSet<ReportConfiguration> ReportConfigurations { get; set; }
+        public virtual DbSet<GroupConfiguration> GroupConfigurations { get; set; }
+        public virtual DbSet<FileReadingData> FileOpeningDatas { get; set; }
 
         #endregion
 
-        public PrinterConfigurationDataBase(string connectionString)
-            : base(connectionString)
+        public PrinterConfigurationDataBase(string nameOrConnectionString)
+            : base(nameOrConnectionString)
         {
         }
 
@@ -24,9 +25,26 @@ namespace Model
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<ReportConfiguration>().HasKey(configuration => configuration.)
+            //modelBuilder.Entity<PrinterConfiguration>().HasKey(configuration => configuration.Id);
 
-            throw new NotImplementedException("Form db rules and formats");
+            modelBuilder.Ignore<PrinterConfiguration>();
+
+            var reportConfiguration = modelBuilder.Entity<ReportConfiguration>();
+            reportConfiguration.
+                                HasKey(report => report.Id).
+                                Property(report => report.ReportName).
+                                HasColumnName("Name").
+                                IsRequired();
+            reportConfiguration.HasRequired(report => report.Group).WithMany(group => group.Reports);
+            reportConfiguration.HasMany(report => report.Openings).WithRequired(data => data.Report);
+
+            modelBuilder.Entity<GroupConfiguration>().
+                         HasKey(group => group.Id).
+                         Property(group => group.GroupName).
+                         HasColumnName("Name").
+                         IsRequired();
+
+            modelBuilder.Entity<FileReadingData>().HasKey(data => data.Id);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -45,7 +63,7 @@ namespace Model
                     configuration => configuration.ReportName.Equals(reportName));
         }
 
-         public GroupConfiguration FindGroup(string reportName)
+        public GroupConfiguration FindGroup(string reportName)
         {
             // todo exception localizations
             if (string.IsNullOrWhiteSpace(reportName))

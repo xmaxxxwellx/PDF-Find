@@ -28,12 +28,14 @@ namespace Model.Entities
 
         #region Properties
 
-        public ICollection<ReportPrintData> Openings { get; internal set; }
+        public GroupConfiguration Group { get; set; }
+
+        internal ICollection<ReportPrintData> Openings { get; set; }
 
         public string ReportName
         {
             get { return _reportName; }
-            internal set
+            set
             {
                 ValidateReportName(value);
                 _reportName = value;

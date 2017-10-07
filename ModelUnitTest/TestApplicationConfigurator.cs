@@ -1,8 +1,6 @@
-﻿
-using System.ComponentModel;
-using Model;
+﻿using System.ComponentModel;
 
-namespace ModelUnitTest
+namespace Model.Tests
 {
     public class TestApplicationConfigurator : IApplicationConfigurator
     {

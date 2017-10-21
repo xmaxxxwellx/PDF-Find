@@ -49,7 +49,7 @@ namespace Model
                     return;
                 if (!File.Exists(value))
                     throw new FileNotFoundException("Reader wasn't found", value); // todo locale
-                if (Path.GetExtension(value) != "exe")
+                if (Path.GetExtension(value).Equals("exe", StringComparison.OrdinalIgnoreCase))
                     // todo locale            // todo exception type
                     throw new ArgumentException("Reader must be *.exe application", nameof(value));
 

@@ -35,8 +35,8 @@ namespace Model
                                 Property(report => report.ReportName).
                                 HasColumnName("Name").
                                 IsRequired();
-            reportConfiguration.HasRequired(report => report.Group).WithMany(group => group.Reports);
-            reportConfiguration.HasMany(report => report.Openings).WithRequired(data => data.Report);
+            reportConfiguration.HasRequired(report => report.Group).WithMany();
+            reportConfiguration.HasMany(report => report.Openings).WithRequired();
 
             modelBuilder.Entity<GroupConfiguration>().
                          HasKey(group => group.Id).

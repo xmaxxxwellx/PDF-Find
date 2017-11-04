@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32;
 
-namespace Model.Tests.Tests
+namespace ViewModel.UnitTest
 {
     [TestClass]
     public class RegistryApplicationConfiguratorTest

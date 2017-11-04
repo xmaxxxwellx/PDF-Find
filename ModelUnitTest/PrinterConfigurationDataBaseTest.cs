@@ -2,10 +2,9 @@
 using System.Data.Entity.Validation;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Model;
 using Model.Entities;
 
-namespace ModelUnitTest.Tests
+namespace Model.Tests
 {
     [TestClass]
     public class PrinterConfigurationDataBaseTest

@@ -1,10 +1,11 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using Model;
 using Model.Entities;
 using PdfSharp.Pdf;
 
-namespace Model
+namespace ViewModel
 {
     public class ReportDataModel
     {
@@ -27,7 +28,7 @@ namespace Model
 
         #region Properties
 
-        private PrinterConfigurationDataBase DataBase { get; }
+        public PrinterConfigurationDataBase DataBase { get; }
 
         public IApplicationConfigurator ApplicationConfigurator { get; }
 

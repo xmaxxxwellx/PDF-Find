@@ -1,11 +1,11 @@
-
-using Microsoft.Win32;
 using System;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
+using Microsoft.Win32;
 
-namespace Model
+namespace ViewModel
 {
     public class RegistryApplicationConfigurator : IApplicationConfigurator
     {
@@ -73,6 +73,11 @@ namespace Model
             }
         }
 
+        ICommand IApplicationConfigurator.Save
+        {
+            get { throw new NotImplementedException(); }
+        } // new Prism.Commands.DelegateCommand();
+
         #endregion
 
         public RegistryApplicationConfigurator(string regKey)
@@ -104,7 +109,7 @@ namespace Model
 
         public void Save() {
             RegistryKey currentUser = Registry.CurrentUser;
-            RegistryKey pdfFindKey = currentUser.OpenSubKey(_regKey, true) ?? currentUser.CreateSubKey(_regKey, true);
+            RegistryKey pdfFindKey = currentUser.OpenSubKey(_regKey, true) ?? currentUser.CreateSubKey(_regKey, RegistryKeyPermissionCheck.ReadWriteSubTree);
 
             pdfFindKey.SetValue("language", Language);
             pdfFindKey.SetValue("readerPath", ReaderPath);

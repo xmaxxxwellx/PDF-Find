@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Model.Tests.Tests
+namespace ViewModel.UnitTest
 {
     [TestClass]
     public class ReportDataModelTest

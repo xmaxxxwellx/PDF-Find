@@ -1,6 +1,7 @@
 using System.ComponentModel;
+using System.Windows.Input;
 
-namespace Model
+namespace ViewModel
 {
     public interface IApplicationConfigurator : INotifyPropertyChanged
     {
@@ -8,6 +9,6 @@ namespace Model
         string ReaderPath { get; set; }
         string DataBaseConnectionString { get; set; }
 
-        void Save();
+        ICommand Save { get;} 
     }
 }

@@ -6,8 +6,8 @@
     <ProjectGuid>{9A6759E2-5447-4D3B-B0FD-B9384B1A9552}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ModelUnitTest</RootNamespace>
-    <AssemblyName>ModelUnitTest</AssemblyName>
+    <RootNamespace>Model.Tests</RootNamespace>
+    <AssemblyName>Model.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

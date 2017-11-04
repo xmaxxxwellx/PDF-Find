@@ -1,21 +1,17 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-<<<<<<< HEAD
-=======
 using Microsoft.Win32;
-using Model;
->>>>>>> pr/2
 
 namespace Model.Tests.Tests
 {
     [TestClass]
     public class RegistryApplicationConfiguratorTest
     {
-        private static string key = "PdfFindTest";
+        private const string Key = "PdfFindTest";
 
         [TestMethod]
         public void ConstructorTest()
         {
-            RegistryApplicationConfigurator regAppConfig = new RegistryApplicationConfigurator(key);
+            var regAppConfig = new RegistryApplicationConfigurator(Key);
 
             Assert.IsNotNull(regAppConfig);
         }
@@ -23,15 +19,17 @@ namespace Model.Tests.Tests
         [TestMethod]
         public void SaveMethodTest() 
         {
-            RegistryApplicationConfigurator regAppConfig = new RegistryApplicationConfigurator(key);
+            var regAppConfig = new RegistryApplicationConfigurator(Key)
+            {
+                Language = "ukrainian",
+                ReaderPath = @"C:\Program Files\TotalCommander\TOTALCMD64.EXE",
+                DataBaseConnectionString = "conectionSTR"
+            };
 
-            regAppConfig.Language = "ukrainian";
-            regAppConfig.ReaderPath = @"C:\Program Files\TotalCommander\TOTALCMD64.EXE";
-            regAppConfig.DataBaseConnectionString = "conectionSTR";
 
             regAppConfig.Save();
 
-            regAppConfig = new RegistryApplicationConfigurator(key);
+            regAppConfig = new RegistryApplicationConfigurator(Key);
 
             Assert.AreEqual(regAppConfig.Language, "ukrainian");
             Assert.AreEqual(regAppConfig.ReaderPath, @"C:\Program Files\TotalCommander\TOTALCMD64.EXE");
@@ -39,9 +37,6 @@ namespace Model.Tests.Tests
         }
 
         [TestCleanup]
-        public void CleanUpRegistry() {
-            RegistryKey currentUserKey = Registry.CurrentUser;
-            currentUserKey.DeleteSubKey(key);
-        }
+        public void CleanUpRegistry() => Registry.CurrentUser.DeleteSubKey(Key);
     }
 }

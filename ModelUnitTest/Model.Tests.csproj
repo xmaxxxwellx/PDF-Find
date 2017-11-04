@@ -55,7 +55,6 @@
     <Compile Include="Tests\RegistryApplicationConfiguratorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\ReportDataModelTest.cs" />
-    <Compile Include="TestApplicationConfigurator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj">

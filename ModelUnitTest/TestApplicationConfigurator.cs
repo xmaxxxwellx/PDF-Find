@@ -5,9 +5,10 @@ namespace Model.Tests
     public class TestApplicationConfigurator : IApplicationConfigurator
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        public Language Language
+
+        public string Language
         {
-            get { return Language.English; }
+            get { return "English"; }
             set { throw new System.NotImplementedException(); }
         }
 

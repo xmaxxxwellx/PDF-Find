@@ -28,13 +28,13 @@ Use:
 * [Visual Studio] - powerfull IDE
 * [Trello] - great tool for command working
 * [WPF] - no comments
-* [PDFSharp, PDFClown] - free librarys
+* [PDFSharp] - free librarys
 
 
 
 ### Installation
 
-Dillinger requires [.NET Framework 4.6](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=2&cad=rja&uact=8&ved=0ahUKEwiM8rn4gqXXAhVRoaQKHWAPAMYQFggsMAE&url=https%3A%2F%2Fwww.microsoft.com%2Fru-ru%2Fdownload%2Fdetails.aspx%3Fid%3D53344&usg=AOvVaw0chM7EJr_k0h8K5TcHooSN) to run.
+Dillinger requires [.NET Framework 4.5.2](https://www.microsoft.com/ru-ru/download/details.aspx?id=42642) to run.
 
 
 

@@ -80,6 +80,11 @@ namespace ViewModel
 
         #endregion
 
+        public RegistryApplicationConfigurator() : this("pdfRegKey")
+        {
+
+        }
+
         public RegistryApplicationConfigurator(string regKey)
         {
             _regKey = regKey;

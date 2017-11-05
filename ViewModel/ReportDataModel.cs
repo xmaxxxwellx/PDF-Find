@@ -28,19 +28,19 @@ namespace ViewModel
 
         #region Properties
 
-        public PrinterConfigurationDataBase DataBase { get; }
+        public DataBase DataBase { get; }
 
         public IApplicationConfigurator ApplicationConfigurator { get; }
 
         #endregion
 
-        public ReportDataModel(IApplicationConfigurator applicationConfigurator, PrinterConfigurationDataBase dataBase)
+        public ReportDataModel(IApplicationConfigurator applicationConfigurator)
         {
-            if (applicationConfigurator == null) throw new ArgumentNullException(nameof(applicationConfigurator));
-            if (dataBase == null) throw new ArgumentNullException(nameof(dataBase));
+            if (applicationConfigurator == null)
+                throw new ArgumentNullException(nameof(applicationConfigurator));
 
             ApplicationConfigurator = applicationConfigurator;
-            DataBase = dataBase;
+            DataBase = new DataBase(applicationConfigurator.DataBaseConnectionString);
         }
 
         #region Methods

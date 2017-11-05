@@ -6,7 +6,7 @@ using Model.Entities;
 
 namespace Model
 {
-    public class PrinterConfigurationDataBase : DbContext
+    public class DataBase : DbContext
     {
         #region Properties
 
@@ -16,7 +16,7 @@ namespace Model
 
         #endregion
 
-        public PrinterConfigurationDataBase(string nameOrConnectionString)
+        public DataBase(string nameOrConnectionString)
             : base(nameOrConnectionString)
         {
         }

@@ -7,19 +7,19 @@ using Model.Entities;
 namespace Model.Tests
 {
     [TestClass]
-    public class PrinterConfigurationDataBaseTest
+    public class DataBaseTest
     {
         [TestMethod]
         public void Constructor()
         {
-            new PrinterConfigurationDataBase("PdfFindTestBase");
+            new DataBase("PdfFindTestBase");
         }
 
         [TestMethod]
         // todo !!!
         public void AddReport()
         {
-            var dataBase = new PrinterConfigurationDataBase("PdfFindTestBase");
+            var dataBase = new DataBase("PdfFindTestBase");
 
             var reportConfigurations = new[]
             {

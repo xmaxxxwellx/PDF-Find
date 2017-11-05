@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using Model;
-using Model.Entities;
 using PdfSharp.Pdf;
 
 namespace ViewModel

@@ -1,4 +1,4 @@
-﻿using Model.Entities;
+﻿using Model;
 using System.Windows;
 using ViewModel;
 

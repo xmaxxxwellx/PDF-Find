@@ -73,21 +73,21 @@ namespace ViewModel
             }
         }
 
-        ICommand IApplicationConfigurator.Save
-        {
-            get { throw new NotImplementedException(); }
-        } // new Prism.Commands.DelegateCommand();
+        public ICommand SaveCommand { get; }
 
         #endregion
 
         public RegistryApplicationConfigurator(string regKey)
         {
+            SaveCommand = new Prism.Commands.DelegateCommand(Save);
+
             _regKey = regKey;
 
             RegistryKey currentUser = Registry.CurrentUser;
             RegistryKey pdfFindKey = currentUser.OpenSubKey(regKey);
 
-            if (pdfFindKey != null) {
+            if (pdfFindKey != null)
+            {
 
                 Language = pdfFindKey.GetValue("language").ToString();
                 ReaderPath = pdfFindKey.GetValue("readerPath").ToString();
@@ -95,7 +95,8 @@ namespace ViewModel
 
                 pdfFindKey.Close();
             }
-            else {
+            else
+            {
                 _language = "english";
                 _readerPath = "";
                 _dataBaseConnectionString = "";
@@ -107,7 +108,8 @@ namespace ViewModel
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        public void Save() {
+        private void Save()
+        {
             RegistryKey currentUser = Registry.CurrentUser;
             RegistryKey pdfFindKey = currentUser.OpenSubKey(_regKey, true) ?? currentUser.CreateSubKey(_regKey, RegistryKeyPermissionCheck.ReadWriteSubTree);
 

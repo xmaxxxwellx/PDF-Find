@@ -18,7 +18,7 @@ namespace View
             }
             else
             {
-                ReportDataModel reportDataModel = new ReportDataModel(new RegistryApplicationConfigurator(""));
+                ReportDataModel reportDataModel = new ReportDataModel(new RegistryApplicationConfigurator());
                 string path = e.Args[0].ToString();
                 ReportConfiguration report = reportDataModel.FindReport(path);
                 if (report == null)

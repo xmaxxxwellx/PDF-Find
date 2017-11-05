@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Microsoft.Win32;
+using System.Configuration;
 
 namespace ViewModel
 {
@@ -77,14 +78,16 @@ namespace ViewModel
 
         #endregion
 
-        public RegistryApplicationConfigurator(string regKey)
+        public RegistryApplicationConfigurator()
         {
             SaveCommand = new Prism.Commands.DelegateCommand(Save);
 
-            _regKey = regKey;
+            var key = new AppSettingsReader().GetValue("RegKey", typeof(string)).ToString(); ;
+
+            _regKey = key;
 
             RegistryKey currentUser = Registry.CurrentUser;
-            RegistryKey pdfFindKey = currentUser.OpenSubKey(regKey);
+            RegistryKey pdfFindKey = currentUser.OpenSubKey(key);
 
             if (pdfFindKey != null)
             {

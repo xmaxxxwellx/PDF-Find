@@ -1,17 +1,19 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32;
+using System.Configuration;
 
 namespace ViewModel.UnitTest
 {
     [TestClass]
     public class RegistryApplicationConfiguratorTest
     {
-        private const string Key = "PdfFindTest";
+
+        string key = new AppSettingsReader().GetValue("RegKey", typeof(string)).ToString();
 
         [TestMethod]
         public void ConstructorTest()
         {
-            var regAppConfig = new RegistryApplicationConfigurator(Key);
+            var regAppConfig = new RegistryApplicationConfigurator();
 
             Assert.IsNotNull(regAppConfig);
         }
@@ -19,24 +21,58 @@ namespace ViewModel.UnitTest
         [TestMethod]
         public void SaveMethodTest() 
         {
-            var regAppConfig = new RegistryApplicationConfigurator(Key)
+            var regAppConfig = new RegistryApplicationConfigurator()
             {
                 Language = "ukrainian",
-                ReaderPath = @"C:\Program Files\TotalCommander\TOTALCMD64.EXE",
+                ReaderPath = @"C:\Users\Maxxxwell\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\StartMenu\Visual Studio 2017.lnk",
+                //@"C:\Program Files\WinRAR\WinRAR.exe"
                 DataBaseConnectionString = "conectionSTR"
             };
 
+            regAppConfig.SaveCommand.Execute(null);
 
-            regAppConfig.Save();
-
-            regAppConfig = new RegistryApplicationConfigurator(Key);
+            regAppConfig = new RegistryApplicationConfigurator();
 
             Assert.AreEqual(regAppConfig.Language, "ukrainian");
-            Assert.AreEqual(regAppConfig.ReaderPath, @"C:\Program Files\TotalCommander\TOTALCMD64.EXE");
+            Assert.AreEqual(regAppConfig.ReaderPath, @"C:\Users\Maxxxwell\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\StartMenu\Visual Studio 2017.lnk"); //@"C:\Program Files\WinRAR\WinRAR.exe");
             Assert.AreEqual(regAppConfig.DataBaseConnectionString, "conectionSTR");
         }
 
+        [TestMethod]
+        public void ReaderPathValidation()
+        {
+            try
+            {
+                string[] mass = { "", @"C:\Program Files\WinRAR\WinRAR.txt", @"‪C:\Program Files\WinRAR\ReadMe.txt" };
+                var regAppConfig = new RegistryApplicationConfigurator();
+
+                //regAppConfig.ReaderPath = @"C:\Program Files\WinRAR\WinRAR.exe";
+
+                foreach (var item in mass)
+                {
+                    regAppConfig.ReaderPath = item;
+                }
+
+                Assert.Fail("Wrong ReaderPath");
+            }
+            catch (AssertFailedException)
+            {
+                throw;
+            }
+            catch
+            {
+                //ignore
+            }
+        }
+
         [TestCleanup]
-        public void CleanUpRegistry() => Registry.CurrentUser.DeleteSubKey(Key);
+        public void CleanUpRegistry()
+        {
+            RegistryKey currentUser = Registry.CurrentUser;
+            RegistryKey pdfFindKey = currentUser.OpenSubKey(key, true);
+
+            if (pdfFindKey != null)
+            Registry.CurrentUser.DeleteSubKey(key);
+        }
     }
 }

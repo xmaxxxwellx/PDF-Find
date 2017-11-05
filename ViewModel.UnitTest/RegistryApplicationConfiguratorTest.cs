@@ -11,7 +11,7 @@ namespace ViewModel.UnitTest
         string key = new AppSettingsReader().GetValue("RegKey", typeof(string)).ToString();
 
         [TestMethod]
-        public void ConstructorTest()
+        public void RegistryApplicationConfiguratorConstructorTest()
         {
             var regAppConfig = new RegistryApplicationConfigurator();
 
@@ -19,7 +19,7 @@ namespace ViewModel.UnitTest
         }
 
         [TestMethod]
-        public void SaveMethodTest() 
+        public void RegistryApplicationConfiguratorSaveMethodTest() 
         {
             var regAppConfig = new RegistryApplicationConfigurator()
             {
@@ -39,7 +39,7 @@ namespace ViewModel.UnitTest
         }
 
         [TestMethod]
-        public void ReaderPathValidation()
+        public void RegistryApplicationConfiguratorReaderPathValidation()
         {
             try
             {

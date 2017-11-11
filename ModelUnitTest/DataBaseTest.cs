@@ -1,58 +1,61 @@
-﻿using System;
-using System.Data.Entity.Validation;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Model.Entities;
 
 namespace Model.Tests
 {
     [TestClass]
     public class DataBaseTest
     {
-        [TestMethod]
-        public void Constructor()
-        {
-            new DataBase("PdfFindTestBase");
-        }
+        private const string DataBaseName = "PdfFindTestBase";
 
         [TestMethod]
-        // todo !!!
-        public void AddReport()
+        public void DataBaseConstructor()
         {
-            var dataBase = new DataBase("PdfFindTestBase");
-
-            var reportConfigurations = new[]
-            {
-                new ReportConfiguration(),
-                new ReportConfiguration {Group = null},
-                new ReportConfiguration {Group = new GroupConfiguration()}
-            };
-
-            foreach (var configuration in reportConfigurations)
-            {
-                try
-                {
-                    dataBase.ReportConfigurations.Add(configuration);
-                    if (dataBase.SaveChanges() != 1)
-                        throw new Exception();
-                }
-                catch (DbEntityValidationException)
-                {
-                    dataBase.ReportConfigurations.Remove(configuration);
-                }
-            }
+            new DataBase(DataBaseName).Dispose();
 
             try
             {
-                dataBase.ReportConfigurations.Add(new ReportConfiguration { Group = new GroupConfiguration {GroupName = "Group#1"}, ReportName = "ReportName#1"});
-                dataBase.SaveChanges();
+                var wrongName = "PdfFindNotExistedBase";
+                using (var db = new DataBase(wrongName))
+                    db.ReportConfigurations.FirstOrDefault();
+                Assert.Fail("Wrong connection string not failed");
             }
-            catch (DbEntityValidationException e)
+            catch
             {
-                var dbValidationError = e.EntityValidationErrors.First().ValidationErrors.First();
-                throw new Exception((dbValidationError.ErrorMessage) + " : " + (dbValidationError.PropertyName) 
-                    + " : " + dataBase.ReportConfigurations.Count() 
-                    + " : " + ((GroupConfiguration)(e.EntityValidationErrors.First().Entry.Entity)).GroupName, e);
+                //ignore
+            }
+        }
+
+        [TestMethod]
+        public void DataBaseRead()
+        {
+            using (var db = new DataBase(DataBaseName))
+                db.ReportConfigurations.FirstOrDefault();
+        }
+
+        [TestMethod]
+        public void DataBaseWrite()
+        {
+            var group = new GroupConfiguration() { GroupName = "Report" };
+
+            // create
+            using (var db = new DataBase(DataBaseName))
+            {
+                db.GroupConfigurations.Add(group);
+                db.SaveChanges();
+            }
+
+            // read
+            using (var db = new DataBase(DataBaseName))
+                db.GroupConfigurations.First(g => g.Id == group.Id);
+
+            // delete
+            using (var db = new DataBase(DataBaseName))
+            {
+                var removeGroup = db.GroupConfigurations.First(g => g.Id == group.Id);
+                db.GroupConfigurations.Remove(removeGroup);
+                db.SaveChanges();
+                Assert.IsNull(db.GroupConfigurations.FirstOrDefault(g => g.Id == group.Id));
             }
         }
     }

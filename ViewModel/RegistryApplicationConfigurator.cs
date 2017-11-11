@@ -78,7 +78,7 @@ namespace ViewModel
 
         #endregion
 
-        public RegistryApplicationConfigurator()
+        public RegistryApplicationConfigurator(object p)
         {
             SaveCommand = new Prism.Commands.DelegateCommand(Save);
 

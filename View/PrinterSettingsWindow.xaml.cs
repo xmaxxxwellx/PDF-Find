@@ -23,5 +23,7 @@ namespace View
 		{
 			InitializeComponent();
 		}
+
+	   
 	}
 }

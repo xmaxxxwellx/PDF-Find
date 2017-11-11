@@ -13,7 +13,7 @@ namespace ViewModel.UnitTest
         [TestMethod]
         public void RegistryApplicationConfiguratorConstructorTest()
         {
-            var regAppConfig = new RegistryApplicationConfigurator();
+            var regAppConfig = new RegistryApplicationConfigurator(null);
 
             Assert.IsNotNull(regAppConfig);
         }
@@ -21,7 +21,7 @@ namespace ViewModel.UnitTest
         [TestMethod]
         public void RegistryApplicationConfiguratorSaveMethodTest() 
         {
-            var regAppConfig = new RegistryApplicationConfigurator()
+            var regAppConfig = new RegistryApplicationConfigurator(null)
             {
                 Language = "ukrainian",
                 ReaderPath = @"C:\Users\Maxxxwell\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\StartMenu\Visual Studio 2017.lnk",
@@ -31,7 +31,7 @@ namespace ViewModel.UnitTest
 
             regAppConfig.SaveCommand.Execute(null);
 
-            regAppConfig = new RegistryApplicationConfigurator();
+            regAppConfig = new RegistryApplicationConfigurator(null);
 
             Assert.AreEqual(regAppConfig.Language, "ukrainian");
             Assert.AreEqual(regAppConfig.ReaderPath, @"C:\Users\Maxxxwell\AppData\Roaming\Microsoft\Internet Explorer\Quick Launch\User Pinned\StartMenu\Visual Studio 2017.lnk"); //@"C:\Program Files\WinRAR\WinRAR.exe");
@@ -44,7 +44,7 @@ namespace ViewModel.UnitTest
             try
             {
                 string[] mass = { "", @"C:\Program Files\WinRAR\WinRAR.txt", @"‪C:\Program Files\WinRAR\ReadMe.txt" };
-                var regAppConfig = new RegistryApplicationConfigurator();
+                var regAppConfig = new RegistryApplicationConfigurator(null);
 
                 //regAppConfig.ReaderPath = @"C:\Program Files\WinRAR\WinRAR.exe";
 

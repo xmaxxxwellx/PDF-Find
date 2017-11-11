@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using System.Windows.Input;
-using Model.Entities;
+using Model;
 
 namespace ViewModel
 {
-   public class StateReport
+    public class StateReport
    {
        public static StateReport Instance { get; } = new StateReport();
 
@@ -24,11 +20,19 @@ namespace ViewModel
             }
        }
 
-       public ICommand SaveCommand { get; }
+       public  ICommand SaveCommand { get; private set; }
 
        private StateReport()
        {
-          
+           SaveCommand = new Prism.Commands.DelegateCommand(Save);
+       }
+       
+       private void Save()
+       {
+           var db = new Model.DataBase(new RegistryApplicationConfigurator(null).DataBaseConnectionString);
+           db.ReportConfigurations.Add(CurrentReportConfiguration);
+           db.SaveChanges();
+            
        }
     }
 }

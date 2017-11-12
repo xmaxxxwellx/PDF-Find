@@ -18,7 +18,7 @@
         <TextBox Text="{Binding Source={x:Static ViewModel:StateReport.Instance}, Path=CurrentReportConfiguration.PrinterName , Mode=TwoWay}" HorizontalAlignment="Left" Height="23" Margin="140,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="237"/>
         <GroupBox FontWeight="Bold" Header="Settings" HorizontalAlignment="Left" Height="145" Margin="10,10,0,0" VerticalAlignment="Top" Width="380"/>
         <Button Command="{Binding Source={x:Static ViewModel:StateReport.Instance}, Path=SaveCommand}"  Content="OK" FontWeight="Bold" HorizontalAlignment="Left" Margin="207,168,0,0" VerticalAlignment="Top" Width="75" Height="25"/>
-        <Button Content="Cancel" IsCancel="True" FontWeight="Bold" HorizontalAlignment="Left" Margin="301,168,0,0" VerticalAlignment="Top" Width="75" Height="25"/>
+        <Button Content="Cancel" Click="Button_Click"  FontWeight="Bold" HorizontalAlignment="Left" Margin="301,168,0,0" VerticalAlignment="Top" Width="75" Height="25"/>
         <Label Content="Paper format:" FontWeight="Bold" HorizontalAlignment="Left" Margin="212,24,0,0" VerticalAlignment="Top"/>
 
     </Grid>

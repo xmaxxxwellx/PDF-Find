@@ -21,13 +21,7 @@ namespace ViewModel
                 return Enum.GetValues(typeof(PaperFormat)).Cast<PaperFormat>().ToList<PaperFormat>();
             }
         }
-
-        public PaperFormat PaperFormat
-        {
-            get;
-            set;
-        }
-
+        
         public ReportConfiguration CurrentReportConfiguration
         {
             get { return report; }
@@ -47,7 +41,7 @@ namespace ViewModel
        
        private void Save()
        {
-           var db = new Model.DataBase(new RegistryApplicationConfigurator(null).DataBaseConnectionString);
+           var db = new Model.DataBase(new RegistryApplicationConfigurator().DataBaseConnectionString);
            db.ReportConfigurations.Add(CurrentReportConfiguration);
            db.SaveChanges();
             

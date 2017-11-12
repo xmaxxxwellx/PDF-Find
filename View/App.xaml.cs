@@ -11,8 +11,9 @@ namespace View
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            //PrinterSettingsWindow settingsWindow = new PrinterSettingsWindow();
-            //settingsWindow.Show();
+            //StateReport.Instance.CurrentReportConfiguration = new ReportConfiguration { ReportName = "ddddddddddddd" };
+            //PrinterSettingsWindow settingsWindow2 = new PrinterSettingsWindow();
+            //settingsWindow2.Show();
             //return;
             //todo remove
             if (e.Args.Length == 0)
@@ -22,7 +23,7 @@ namespace View
             }
             else
             {
-                ReportDataModel reportDataModel = new ReportDataModel(new RegistryApplicationConfigurator(null));
+                ReportDataModel reportDataModel = new ReportDataModel(new RegistryApplicationConfigurator());
                 string path = e.Args[0].ToString();
                 ReportConfiguration report = reportDataModel.FindReport(path);
                 if (report == null)

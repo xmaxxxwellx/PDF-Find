@@ -1,6 +1,9 @@
 ﻿
 using System.Windows.Input;
 using Model;
+using System.Collections.Generic;
+using System;
+using System.Linq;
 
 namespace ViewModel
 {
@@ -9,6 +12,21 @@ namespace ViewModel
        public static StateReport Instance { get; } = new StateReport();
 
         private ReportConfiguration report;
+
+        public IList<PaperFormat> PaperFormats
+        {
+            get
+            {
+                // Will result in a list like {"Tester", "Engineer"}
+                return Enum.GetValues(typeof(PaperFormat)).Cast<PaperFormat>().ToList<PaperFormat>();
+            }
+        }
+
+        public PaperFormat PaperFormat
+        {
+            get;
+            set;
+        }
 
         public ReportConfiguration CurrentReportConfiguration
         {

@@ -5,20 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:View"
         xmlns:ViewModel="clr-namespace:ViewModel;assembly=ViewModel" 
+        xmlns:Model="clr-namespace:Model;assembly=Model"
         mc:Ignorable="d"
         Title="PDF Find - Settings Printer" Height="240" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Background="Coral">
 
     <Grid ShowGridLines="True">
-        <ComboBox ItemsSource="{Binding Source={x:Static ViewModel:StateReport.Instance}, Path=CurrentReportConfiguration.PaperFormat}" HorizontalAlignment="Left" Margin="314,26,0,0" VerticalAlignment="Top" Width="62" Height="24"/>
+        <ComboBox SelectedItem="{Binding Source={x:Static ViewModel:StateReport.Instance}, Path=CurrentReportConfiguration.PaperFormat, Mode=TwoWay}" ItemsSource="{Binding Source={x:Static ViewModel:StateReport.Instance},Path=PaperFormats}" HorizontalAlignment="Left" Margin="314,26,0,0" VerticalAlignment="Top" Width="62" Height="24"/>
         <ComboBox HorizontalAlignment="Left" Margin="140,60,0,0" VerticalAlignment="Top" Width="236"/>
-        <CheckBox FontWeight="Bold" Content="Duplex mode " HorizontalAlignment="Left" Margin="22,122,0,0" VerticalAlignment="Top"/>
+        <CheckBox IsChecked="{Binding Source={x:Static ViewModel:StateReport.Instance}, Path=CurrentReportConfiguration.Duplex, Mode=TwoWay}" FontWeight="Bold" Content="Duplex mode " HorizontalAlignment="Left" Margin="22,122,0,0" VerticalAlignment="Top"/>
         <RadioButton GroupName="CmbBox" FontWeight="Bold" Content="Printer from list:" HorizontalAlignment="Left" Margin="22,64,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.553,-0.84"/>
         <RadioButton GroupName="CmbBox" IsChecked="True" FontWeight="Bold" Content="Manual printer:" HorizontalAlignment="Left" Margin="22,94,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="140,90,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="237"/>
+        <TextBox Text="{Binding Source={x:Static ViewModel:StateReport.Instance}, Path=CurrentReportConfiguration.PrinterName , Mode=TwoWay}" HorizontalAlignment="Left" Height="23" Margin="140,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="237"/>
         <GroupBox FontWeight="Bold" Header="Settings" HorizontalAlignment="Left" Height="145" Margin="10,10,0,0" VerticalAlignment="Top" Width="380"/>
         <Button Command="{Binding Source={x:Static ViewModel:StateReport.Instance}, Path=SaveCommand}"  Content="OK" FontWeight="Bold" HorizontalAlignment="Left" Margin="207,168,0,0" VerticalAlignment="Top" Width="75" Height="25"/>
         <Button Content="Cancel" IsCancel="True" FontWeight="Bold" HorizontalAlignment="Left" Margin="301,168,0,0" VerticalAlignment="Top" Width="75" Height="25"/>
-        <Label Content="Papper format:" FontWeight="Bold" HorizontalAlignment="Left" Margin="212,24,0,0" VerticalAlignment="Top"/>
+        <Label Content="Paper format:" FontWeight="Bold" HorizontalAlignment="Left" Margin="212,24,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

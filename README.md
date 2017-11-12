@@ -2,6 +2,8 @@
 
 PDF Finder is a simple tool that helped to manage PDF-documents. 
 
+Depending on the file metadata, PDF Finder opens the file with a standard file viewer of the given format or opens the printer window and prints the file.
+
 PDF Finder performs the following functions:
   - send PDF-file to print
   - see PDF-file in default PDF-viewer

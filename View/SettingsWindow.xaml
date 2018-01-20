@@ -4,12 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:View"
+         xmlns:vm="clr-namespace:ViewModel;assembly=ViewModel"
         mc:Ignorable="d"
         Title="PDF Find" Height="260" Width="500" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Background="Coral">
     <Window.Effect>
         <DropShadowEffect/>
     </Window.Effect>
     <Window.Resources>
+        <vm:RegistryApplicationConfigurator x:Key="dd"></vm:RegistryApplicationConfigurator>
         <Style TargetType="Label">
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
@@ -44,7 +46,7 @@
         <Button Content="Test Connection" Grid.Row="5" Grid.Column="1" Margin="7"></Button>
         <Label Content="Database connection string:" Grid.Row="4" Grid.Column="2"></Label>
         <TextBox Grid.Row="5" Grid.Column="2" Margin="7"  VerticalContentAlignment="Center"></TextBox>
-        <Button Content="OK" Grid.Row="6" Grid.Column="2" Width="80" Margin="10,7,10,7"></Button>
+        <Button Content="OK" Grid.Row="6" Grid.Column="2" Width="80" Margin="10,7,10,7" Command="{Binding Source={StaticResource dd}, Path=SaveCommand}"></Button>
         <Button Content="Cancel" Grid.Row="6" Grid.Column="2" Width="80" Margin="200,7,10,7"></Button>
     </Grid>
 </Window>

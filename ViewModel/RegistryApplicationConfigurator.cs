@@ -16,7 +16,7 @@ namespace ViewModel
         private string _readerPath;
         private string _dataBaseConnectionString;
 
-        private string _regKey;
+        private readonly string _regKey;
 
         #endregion
 
@@ -34,6 +34,7 @@ namespace ViewModel
                     throw new ArgumentException("Argument is null or whitespace", nameof(value));
                 if (_language == value) return;
                 _language = value;
+                Properties.Settings.Default.DefaultCulture = _language;
                 OnPropertyChanged();
             }
         }
@@ -82,27 +83,27 @@ namespace ViewModel
         {
             SaveCommand = new Prism.Commands.DelegateCommand(Save);
 
-            var key = new AppSettingsReader().GetValue("RegKey", typeof(string)).ToString(); ;
+            var key = new AppSettingsReader().GetValue("RegKey", typeof(string)).ToString();
 
             _regKey = key;
+            
+            var currentUser = Registry.CurrentUser;
 
-            RegistryKey currentUser = Registry.CurrentUser;
-            RegistryKey pdfFindKey = currentUser.OpenSubKey(key);
-
-            if (pdfFindKey != null)
+            using (var pdfFindKey = currentUser.OpenSubKey(_regKey))
             {
+                if (pdfFindKey != null)
+                {
 
-                Language = pdfFindKey.GetValue("language").ToString();
-                ReaderPath = pdfFindKey.GetValue("readerPath").ToString();
-                DataBaseConnectionString = pdfFindKey.GetValue("dbConnectionString").ToString();
-
-                pdfFindKey.Close();
-            }
-            else
-            {
-                _language = "english";
-                _readerPath = "";
-                _dataBaseConnectionString = "";
+                    Language = pdfFindKey.GetValue("language").ToString();
+                    ReaderPath = pdfFindKey.GetValue("readerPath").ToString();
+                    DataBaseConnectionString = pdfFindKey.GetValue("dbConnectionString").ToString();
+                }
+                else
+                {
+                    _language = "en";
+                    _readerPath = "";
+                    _dataBaseConnectionString = "";
+                }
             }
         }
 
@@ -113,9 +114,10 @@ namespace ViewModel
 
         private void Save()
         {
-            RegistryKey currentUser = Registry.CurrentUser;
-            RegistryKey pdfFindKey = currentUser.OpenSubKey(_regKey, true) ?? currentUser.CreateSubKey(_regKey, RegistryKeyPermissionCheck.ReadWriteSubTree);
+            var currentUser = Registry.CurrentUser;
+            var pdfFindKey = currentUser.OpenSubKey(_regKey, true) ?? currentUser.CreateSubKey(_regKey, RegistryKeyPermissionCheck.ReadWriteSubTree);
 
+            if (pdfFindKey == null) return;
             pdfFindKey.SetValue("language", Language);
             pdfFindKey.SetValue("readerPath", ReaderPath);
             pdfFindKey.SetValue("dbConnectionString", DataBaseConnectionString);

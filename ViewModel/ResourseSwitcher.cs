@@ -62,7 +62,7 @@ namespace ViewModel
                     //ignore
                 }
             }
-            CurrentCulture = null;// todo read from reg  Properties.Settings.Default.DefaultCulture;
+            CurrentCulture = CultureInfo.GetCultureInfo(Properties.Settings.Default.DefaultCulture);
         }
     }
 }

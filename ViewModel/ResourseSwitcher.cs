@@ -4,21 +4,18 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Windows;
 
 namespace ViewModel
 {
-    public class ResourceSwitcher
+    public abstract class ResourceSwitcher : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private List<CultureInfo> Cultures { get; }
 
         private CultureInfo Current { get; set; }
-
-        public Properties.Resources Resources { get; private set; }
-
+        
         public IEnumerable<CultureInfo> CultureList => Cultures;
-
+        
         public CultureInfo CurrentCulture
         {
             get
@@ -27,31 +24,30 @@ namespace ViewModel
             }
             set
             {
-                if (value == null || value == CurrentCulture)
+                if (value == null || Equals(value, CurrentCulture))
                     return;
                 Current = value;
-                if (CultureList.Contains(Current))
-                {
-                    Properties.Resources.Culture = Current;
-                    Resources = new Properties.Resources();
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));
-                }
+                if (!CultureList.Contains(Current)) return;
+              
+                LoadResource();
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));
             }
         }
 
-        public ResourceSwitcher()
+
+        protected ResourceSwitcher()
         {
             Cultures = new List<CultureInfo>();
             if (Cultures.Any()) return;
 
-            var resourceName = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly().ManifestModule.Name)
-                + ".resources.dll";
+            var manifestModuleName = System.Reflection.Assembly.GetEntryAssembly().ManifestModule.Name;
+            var resourceName = Path.GetFileNameWithoutExtension(manifestModuleName) + ".resources.dll";
 
-            foreach (string dir in Directory.GetDirectories(AppDomain.CurrentDomain.BaseDirectory))
+            foreach (var dir in Directory.GetDirectories(AppDomain.CurrentDomain.BaseDirectory))
             {
                 try
                 {
-                    DirectoryInfo dirinfo = new DirectoryInfo(dir);
+                    var dirinfo = new DirectoryInfo(dir);
                     var culture = CultureInfo.GetCultureInfo(dirinfo.Name);
 
                     if (dirinfo.GetFiles(resourceName).Any())
@@ -64,5 +60,7 @@ namespace ViewModel
             }
             CurrentCulture = CultureInfo.GetCultureInfo(Properties.Settings.Default.DefaultCulture);
         }
+
+        protected abstract void LoadResource();
     }
 }

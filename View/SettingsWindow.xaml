@@ -4,16 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:View"
+        xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
         mc:Ignorable="d"
         Title="PDF Find" Height="260" Width="500" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Background="Coral" >
-    <Window.Resources>
-        <viewModel:RegistryApplicationConfigurator x:Key="AppConfigurator"></viewModel:RegistryApplicationConfigurator>
-        <viewModel:ResourceSwitcher x:Key="Resource"></viewModel:ResourceSwitcher>
-    </Window.Resources>
     <Window.Effect>
         <DropShadowEffect/>
     </Window.Effect>
     <Window.Resources>
+        <viewModel:RegistryApplicationConfigurator x:Key="AppConfigurator"></viewModel:RegistryApplicationConfigurator>
+        <local:CultureSwitcher x:Key="Resource"></local:CultureSwitcher>
         <Style TargetType="Label">
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
@@ -21,34 +20,36 @@
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
     </Window.Resources>
-
-    <Grid ShowGridLines="False">
+    <Grid Margin="20, 5, 20 ,5">
         <Grid.RowDefinitions>
-            <RowDefinition Height="10*"></RowDefinition>
             <RowDefinition Height="40*"></RowDefinition>
             <RowDefinition Height="25*"></RowDefinition>
             <RowDefinition Height="40*"></RowDefinition>
             <RowDefinition Height="25*"></RowDefinition>
             <RowDefinition Height="40*"></RowDefinition>
             <RowDefinition Height="40*"></RowDefinition>
-            <RowDefinition Height="10*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="29*"></ColumnDefinition>
             <ColumnDefinition Width="115*"></ColumnDefinition>
             <ColumnDefinition Width="320*"></ColumnDefinition>
-            <ColumnDefinition Width="28*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-
-        <Label Content="Language:" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="85,0,160,0"></Label>
-        <ComboBox Grid.Row="1" Grid.Column="2" Width="150" HorizontalAlignment="Right" Margin="7"></ComboBox>
-        <Label Content="Choose application:" Grid.Row="2" Grid.Column="2"></Label>
-        <Button Content="Application" Grid.Row="3" Grid.Column="1" Margin="7"></Button>
-        <TextBox Grid.Row="3" Grid.Column="2" Margin="7" VerticalContentAlignment="Center"></TextBox>
-        <Button Content="Test Connection" Grid.Row="5" Grid.Column="1" Margin="7"></Button>
-        <Label Content="Database connection string:" Grid.Row="4" Grid.Column="2"></Label>
-        <TextBox Grid.Row="5" Grid.Column="2" Margin="7"  VerticalContentAlignment="Center"></TextBox>
-        <Button Content="OK" Grid.Row="6" Grid.Column="2" Width="80" Margin="10,7,10,7"></Button>
-        <Button Content="Cancel" Grid.Row="6" Grid.Column="2" Width="80" Margin="200,7,10,7"></Button>
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Label Content="Language:" VerticalAlignment="Center" HorizontalAlignment="Left"></Label>
+            <ComboBox MinWidth="100" Margin="7" 
+                      ItemsSource="{Binding Source={StaticResource Resource}, Path=CultureList}"
+                      SelectedValue="{Binding Source={StaticResource Resource}, Path=CurrentCulture}"
+                      DisplayMemberPath="NativeName"></ComboBox>
+        </StackPanel>
+        <Label Content="{Binding Source={StaticResource Resource}, Path=Resources.ChooseApplication}" Grid.Row="1" Grid.Column="1"></Label>
+        <Button Content="{Binding Source={StaticResource Resource}, Path=Resources.ApplicationButton}" Grid.Row="2" Grid.Column="0" Margin="7"></Button>
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="7" VerticalContentAlignment="Center"></TextBox>
+        <Button Content="{Binding Source={StaticResource Resource}, Path=Resources.TestConnectionButton}" Grid.Row="4" Grid.Column="0" Margin="7"></Button>
+        <Label Content="{Binding Source={StaticResource Resource}, Path=Resources.DatabaseConnectionString}" Grid.Row="3" Grid.Column="1"></Label>
+        <TextBox Grid.Row="4" Grid.Column="1" Margin="7"  VerticalContentAlignment="Center"></TextBox>
+        <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="{Binding Source={StaticResource Resource}, Path=Resources.OkButton}" Margin="7" Padding="20, 5" MinWidth="75"></Button>
+            <Button Content="{Binding Source={StaticResource Resource}, Path=Resources.CancelButton}" Margin="7" Padding="20, 5" MinWidth="75"></Button>
+        </StackPanel>
     </Grid>
 </Window>
+

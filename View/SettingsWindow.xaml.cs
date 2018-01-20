@@ -27,19 +27,19 @@ namespace View
 			InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.Filter = "Exe file (*.exe)|*.exe";
-            if (fileDialog.ShowDialog() == true)
-            {
-                lll.Text = fileDialog.InitialDirectory + fileDialog.FileName;
-            }
-        }
+        //private void Button_Click(object sender, RoutedEventArgs e)
+        //{
+        //    OpenFileDialog fileDialog = new OpenFileDialog();
+        //    fileDialog.Filter = "Exe file (*.exe)|*.exe";
+        //    if (fileDialog.ShowDialog() == true)
+        //    {
+        //        lll.Text = fileDialog.InitialDirectory + fileDialog.FileName;
+        //    }
+        //}
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
+        //private void Button_Click_1(object sender, RoutedEventArgs e)
+        //{
+        //    Close();
+        //}
     }
 }

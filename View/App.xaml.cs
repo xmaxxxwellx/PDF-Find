@@ -11,6 +11,11 @@ namespace View
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            //StateReport.Instance.CurrentReportConfiguration = new ReportConfiguration { ReportName = "ddddddddddddd" };
+            //PrinterSettingsWindow settingsWindow2 = new PrinterSettingsWindow();
+            //settingsWindow2.Show();
+            //return;
+            //todo remove
             if (e.Args.Length == 0)
             {
                 SettingsWindow settingsWindow = new SettingsWindow();

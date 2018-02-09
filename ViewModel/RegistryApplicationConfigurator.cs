@@ -111,7 +111,7 @@ namespace ViewModel
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        private void Save()
+        public void Save()
         {
             RegistryKey currentUser = Registry.CurrentUser;
             RegistryKey pdfFindKey = currentUser.OpenSubKey(_regKey, true) ?? currentUser.CreateSubKey(_regKey, RegistryKeyPermissionCheck.ReadWriteSubTree);

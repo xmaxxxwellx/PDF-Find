@@ -27,7 +27,7 @@ namespace View
 
         public SettingsWindow()
         {
-            SaveCommand = new Prism.Commands.DelegateCommand<bool>(Save);
+            SaveCommand = new Prism.Commands.DelegateCommand<bool?>(Save);
 
             InitializeComponent();
         }
@@ -46,9 +46,21 @@ namespace View
             Close();
         }
 
-        private void Save(bool result)
+        private void Save(bool? result)
         {
-            MessageBox.Show($"Result {result}");
+            if (result.Value)
+            {
+                var res = MessageBox.Show(this, "All chanhes saved. Close window?", "Operation complete", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
+                if (res == MessageBoxResult.Yes)
+                {
+                    Close();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Problem", $"Something wrong.. {result}", MessageBoxButton.OK);
+                MessageBox.Show($"Result {result}");
+            }
         }
     }
 }

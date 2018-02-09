@@ -25,10 +25,22 @@ namespace View
                 var path = e.Args[0];
                 var report = reportDataModel.FindReport(path);
                 if (report == null)
-                    if (reportDataModel.FindGroup(path) != null)
+                {
+                    var groupConfiguration = reportDataModel.FindGroup(path);
+                    if (groupConfiguration != null)
+                    {
+                        StateReport.Instance.CurrentReportConfiguration = new ReportConfiguration
+                        {
+                            Group = groupConfiguration,
+                            ReportName = ReportDataModel.GetReportName(path)
+                        };
                         new PrinterSettingsWindow().Show();
+                        groupConfiguration.Reports.Add(StateReport.Instance.CurrentReportConfiguration);
+                        reportDataModel.DataBase.SaveChanges();
+                    }
                     else
                         reportDataModel.OpenInReader(path);
+                }
                 else
                     reportDataModel.OpenForPrint(path, report);
             }

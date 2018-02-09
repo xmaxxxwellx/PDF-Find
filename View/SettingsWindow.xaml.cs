@@ -27,7 +27,7 @@ namespace View
 
         public SettingsWindow()
         {
-            SaveCommand = new Prism.Commands.DelegateCommand<bool>(Save);
+            SaveCommand = new Prism.Commands.DelegateCommand<bool?>(Save);
 
             InitializeComponent();
         }
@@ -46,7 +46,7 @@ namespace View
             Close();
         }
 
-        private void Save(bool result)
+        private void Save(bool? result)
         {
             MessageBox.Show($"Result {result}");
         }

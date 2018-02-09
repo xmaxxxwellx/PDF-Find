@@ -81,7 +81,7 @@ namespace ViewModel
 
         public RegistryApplicationConfigurator()
         {
-            SaveCommand = new Prism.Commands.DelegateCommand(Save);
+            SaveCommand = new Prism.Commands.DelegateCommand<ICommand>(Save);
 
             var key = new AppSettingsReader().GetValue("RegKey", typeof(string)).ToString();
 
@@ -112,16 +112,24 @@ namespace ViewModel
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        public void Save()
-        {
-            var currentUser = Registry.CurrentUser;
-            var pdfFindKey = currentUser.OpenSubKey(_regKey, true) ?? currentUser.CreateSubKey(_regKey, RegistryKeyPermissionCheck.ReadWriteSubTree);
 
-            if (pdfFindKey == null) return;
-            pdfFindKey.SetValue("language", Language);
-            pdfFindKey.SetValue("readerPath", ReaderPath);
-            pdfFindKey.SetValue("dbConnectionString", DataBaseConnectionString);
-            pdfFindKey.Close();
+        private void Save(ICommand command)
+        {
+            try {
+                var currentUser = Registry.CurrentUser;
+                var pdfFindKey = currentUser.OpenSubKey(_regKey, true) ?? currentUser.CreateSubKey(_regKey, RegistryKeyPermissionCheck.ReadWriteSubTree);
+
+                if (pdfFindKey == null) return;
+                pdfFindKey.SetValue("language", Language);
+                pdfFindKey.SetValue("readerPath", ReaderPath);
+                pdfFindKey.SetValue("dbConnectionString", DataBaseConnectionString);
+                pdfFindKey.Close();
+
+                command.Execute(true);
+            }
+            catch {
+                command.Execute(false);
+            }
         }
 
         #endregion

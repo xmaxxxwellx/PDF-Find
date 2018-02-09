@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:View"
         xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
         mc:Ignorable="d"
-        Title="PDF Find" Height="260" Width="500" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Background="Coral" >
+        Title="PDF Find" Height="260" Width="500" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Background="Coral" 
+        x:Name="Window">
     <Window.Effect>
         <DropShadowEffect/>
     </Window.Effect>
@@ -37,19 +38,43 @@
             <Label Content="Language:" VerticalAlignment="Center" HorizontalAlignment="Left"></Label>
             <ComboBox MinWidth="100" Margin="7" 
                       ItemsSource="{Binding Source={StaticResource Resource}, Path=CultureList}"
-                      SelectedValue="{Binding Source={StaticResource Resource}, Path=CurrentCulture}"
-                      DisplayMemberPath="NativeName"></ComboBox>
+                      SelectedValue="{Binding Source={StaticResource AppConfigurator}, Path=Language}"
+                      SelectedItem="{Binding Source={StaticResource Resource}, Path=CurrentCulture}"
+                      DisplayMemberPath="NativeName" />
         </StackPanel>
-        <Label Content="{Binding Source={StaticResource Resource}, Path=Resources.ChooseApplication}" Grid.Row="1" Grid.Column="1"></Label>
-        <Button Content="{Binding Source={StaticResource Resource}, Path=Resources.ApplicationButton}" Grid.Row="2" Grid.Column="0" Margin="7"></Button>
-        <TextBox Grid.Row="2" Grid.Column="1" Margin="7" VerticalContentAlignment="Center"></TextBox>
+        <Label Content="{Binding Source={StaticResource Resource}, Path=Resources.ChooseApplication}" Grid.Row="1" Grid.Column="1" />
+        <Button Content="{Binding Source={StaticResource Resource}, Path=Resources.ApplicationButton}" Grid.Row="2" Grid.Column="0" Margin="7"
+                Click="ChooseAppPath"></Button>
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="7" VerticalContentAlignment="Center" x:Name="AppPath"
+                 Text="{Binding Source={StaticResource AppConfigurator}, Path=ReaderPath, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         <Button Content="{Binding Source={StaticResource Resource}, Path=Resources.TestConnectionButton}" Grid.Row="4" Grid.Column="0" Margin="7"></Button>
         <Label Content="{Binding Source={StaticResource Resource}, Path=Resources.DatabaseConnectionString}" Grid.Row="3" Grid.Column="1"></Label>
-        <TextBox Grid.Row="4" Grid.Column="1" Margin="7"  VerticalContentAlignment="Center"></TextBox>
+        <TextBox Grid.Row="4" Grid.Column="1" Margin="7"  VerticalContentAlignment="Center"
+                 Text="{Binding Source={StaticResource AppConfigurator}, Path=DataBaseConnectionString, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="{Binding Source={StaticResource Resource}, Path=Resources.OkButton}" Margin="7" Padding="20, 5" MinWidth="75"></Button>
-            <Button Content="{Binding Source={StaticResource Resource}, Path=Resources.CancelButton}" Margin="7" Padding="20, 5" MinWidth="75"></Button>
+            <Button Margin="7" Padding="20, 5" MinWidth="75"
+                    Content="{Binding Source={StaticResource Resource}, Path=Resources.OkButton}" 
+                    Command="{Binding Source={StaticResource AppConfigurator}, Path=SaveCommand}" 
+                    CommandParameter="{Binding ElementName=Window, Path=SaveCommand}"/>
+            <Button 
+                Content="{Binding Source={StaticResource Resource}, Path=Resources.CancelButton}" 
+                Margin="7" Padding="20, 5" MinWidth="75"
+                Click="Close"></Button>
         </StackPanel>
     </Grid>
 </Window>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

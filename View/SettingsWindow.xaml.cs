@@ -17,29 +17,38 @@ using ViewModel;
 
 namespace View
 {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
-	public partial class SettingsWindow : Window
-	{
-		public SettingsWindow()
-		{
-			InitializeComponent();
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class SettingsWindow : Window
+    {
+        public ICommand SaveCommand { get; }
+
+
+        public SettingsWindow()
+        {
+            SaveCommand = new Prism.Commands.DelegateCommand<bool>(Save);
+
+            InitializeComponent();
         }
 
-        //private void Button_Click(object sender, RoutedEventArgs e)
-        //{
-        //    OpenFileDialog fileDialog = new OpenFileDialog();
-        //    fileDialog.Filter = "Exe file (*.exe)|*.exe";
-        //    if (fileDialog.ShowDialog() == true)
-        //    {
-        //        lll.Text = fileDialog.InitialDirectory + fileDialog.FileName;
-        //    }
-        //}
+        private void ChooseAppPath(object sender, RoutedEventArgs e)
+        {
+            var fileDialog = new OpenFileDialog { Filter = "Exe file (*.exe)|*.exe" };
+            if (fileDialog.ShowDialog() == true)
+            {
+                AppPath.Text = fileDialog.InitialDirectory + fileDialog.FileName;
+            }
+        }
 
-        //private void Button_Click_1(object sender, RoutedEventArgs e)
-        //{
-        //    Close();
-        //}
+        private void Close(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void Save(bool result)
+        {
+            MessageBox.Show($"Result {result}");
+        }
     }
 }

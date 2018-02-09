@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:View"
+        xmlns:ViewModel="clr-namespace:ViewModel;assembly=ViewModel" 
+        xmlns:Model="clr-namespace:Model;assembly=Model"
         mc:Ignorable="d"
         Title="PDF Find - Settings Printer" Height="260" Width="500" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Background="Coral">
     <Window.Effect>

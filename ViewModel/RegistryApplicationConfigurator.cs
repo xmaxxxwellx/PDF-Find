@@ -115,6 +115,13 @@ namespace ViewModel
 
         private void Save(ICommand command)
         {
+            if (String.IsNullOrWhiteSpace(Language) &&
+                String.IsNullOrWhiteSpace(ReaderPath) &&
+                String.IsNullOrWhiteSpace(DataBaseConnectionString)) {
+                command.Execute(false);
+                return;
+            }
+
             try {
                 var currentUser = Registry.CurrentUser;
                 var pdfFindKey = currentUser.OpenSubKey(_regKey, true) ?? currentUser.CreateSubKey(_regKey, RegistryKeyPermissionCheck.ReadWriteSubTree);
